@@ -16,7 +16,12 @@ namespace mdk
 IOCPMonitor::IOCPMonitor()
 :m_iocpDataPool( sizeof(IOCP_OVERLAPPED), 200 )
 {
-	
+	m_nCPUCount = 0;
+#ifdef WIN32
+	SYSTEM_INFO sysInfo;
+	::GetSystemInfo(&sysInfo);
+	m_nCPUCount = sysInfo.dwNumberOfProcessors;
+#endif
 }
 
 IOCPMonitor::~IOCPMonitor()
@@ -42,8 +47,10 @@ bool IOCPMonitor::Start( int nMaxMonitor )
 #ifdef WIN32
 	//启动IOCP监听
 	//创建完成端口
+	int NumberOfConcurrentThreads = 0;
+	if ( 0 < m_nCPUCount ) NumberOfConcurrentThreads = m_nCPUCount * 2 + 2;
 	m_hCompletPort = CreateIoCompletionPort( INVALID_HANDLE_VALUE, 
-		0, 0, m_nCPUCount * 2 );
+		0, 0, NumberOfConcurrentThreads );
 	if ( NULL == m_hCompletPort ) 
 	{
 		m_initError = "create iocp monitor faild";
@@ -120,6 +127,11 @@ bool IOCPMonitor::WaitEvent( void *eventArray, int &count, bool block )
 			count++;
 		}
 	}
+	else if ( IOCPMonitor::close == pOverlapped->completiontype )
+	{
+		Stop();
+		return false;
+	}
 	else if ( 0 == dwIOSize && IOCPMonitor::recv == pOverlapped->completiontype )
 	{
 		events[count].type = IOCPMonitor::close;
@@ -131,7 +143,7 @@ bool IOCPMonitor::WaitEvent( void *eventArray, int &count, bool block )
 		events[count].type = pOverlapped->completiontype;
 		events[count].client = pOverlapped->sock;
 		events[count].pData = pOverlapped->m_wsaBuffer.buf;
-		events[count].uDataSize = dwIOSize;
+		events[count].uDataSize = (unsigned short)dwIOSize;
 		count++;
 	}
 	m_iocpDataPool.Free(pOverlapped);
@@ -249,6 +261,22 @@ bool IOCPMonitor::AddSend( SOCKET socket, char* dataBuf, unsigned short dataSize
 	
 #endif
 	return true;
+}
+
+bool IOCPMonitor::Stop()
+{
+#ifdef WIN32
+	memset( &m_stopOverlapped.m_overlapped, 0, sizeof(OVERLAPPED) );
+	m_stopOverlapped.m_wsaBuffer.buf = NULL;
+	m_stopOverlapped.m_wsaBuffer.len = 0;
+	m_stopOverlapped.m_overlapped.Internal = 0;
+	m_stopOverlapped.sock = 0;
+	m_stopOverlapped.completiontype = IOCPMonitor::close;
+	
+	::PostQueuedCompletionStatus(m_hCompletPort, 0, 0, (OVERLAPPED*)&m_stopOverlapped );
+#endif
+	return true;
+
 }
 
 }//namespace mdk

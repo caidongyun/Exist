@@ -10,7 +10,6 @@
 #include <vector>
 #include <list>
 #include <iostream>
-#include <assert.h>
 #include <time.h>
 
 #include "../../../include/mdk/mapi.h"
@@ -142,6 +141,7 @@ void NetEngine::Stop()
 	if ( m_stop ) return;
 	m_stop = true;
 	m_pNetMonitor->Stop();
+	m_sigStop.Notify();
 	m_mainThread.Stop( 3000 );
 	m_ioThreads.Stop();
 	m_workThreads.Stop();
@@ -152,7 +152,7 @@ void* NetEngine::Main(void*)
 {
 	while ( !m_stop ) 
 	{
-		m_sleep( 10000 );
+		if ( m_sigStop.Wait( 10000 ) ) break;
 		HeartMonitor();
 		ReConnectAll();
 	}
@@ -334,17 +334,43 @@ bool NetEngine::OnConnect( SOCKET sock, bool isConnectServer )
 void* NetEngine::ConnectWorker( NetConnect *pConnect )
 {
 	m_pNetServer->OnConnect( pConnect->m_host );
-	pConnect->Release();//使用完毕释放共享对象
-	//监听连接
 	/*
-		 必须等OnConnect完成，才可以开始监听连接上的IO事件
-		 否则，可能业务层尚未完成连接初始化工作，就收到OnMsg通知，
-		 导致业务层不知道该如何处理消息
-	 */
-	if ( !MonitorConnect(pConnect) )
+		监听连接
+		※必须等OnConnect业务完成，才可以开始监听连接上的IO事件
+		否则，可能业务层尚未完成连接初始化工作，就收到OnMsg通知，
+		导致业务层不知道该如何处理消息
+		
+		※尚未加入监听，pConnect对象不存在并发线程访问
+		如果OnConnect业务中，没有关闭连接，才能加入监听
+
+		※如果不检查m_bConnect，则MonitorConnect有可能成功，导致OnData有机会触发。
+		因为CloseConnect方法只是设置了关闭连接的标志，并将NetConnect从连接列表删除，
+		并没有真的关闭socket。
+		这是为了保证socket句柄在NetServer::OnClose业务完成前，不被系统重复使用，
+
+		真正关闭是在NetEngine::CloseWorker()里是另外一个线程了。
+		所以如果OnConnect业务中调用了关闭，但在CloseWorker线程执行前，
+		在这里仍然有可能先被执行，监听成功，而这个监听是不希望发生的
+	*/
+	if ( pConnect->m_bConnect )
 	{
-		CloseConnect(pConnect->GetSocket()->GetSocket());
+		if ( !MonitorConnect(pConnect) )
+		{
+
+			/*
+				CloseConnect(SOCKET)是用户接口，属于带有主观意愿，此接口被调用，表示用户希望关闭链接
+				而底层的任何关闭动作都是非主观的，所以不应该调用用户接口，以用户意图在这里被执行。
+				目前CloseConnect(SOCKET)中没有用户意图，此处修改是为以后的更新做准备
+			 */
+			//CloseConnect(pConnect->GetSocket()->GetSocket());
+			AutoLock lock( &m_connectsMutex );
+			ConnectList::iterator itNetConnect = m_connectList.find( pConnect->GetSocket()->GetSocket() );
+			if ( itNetConnect == m_connectList.end() ) return 0;//底层已经主动断开
+			CloseConnect( itNetConnect );
+		}
 	}
+	pConnect->Release();//业务层使用完毕,释放共享对象
+	
 	return 0;
 }
 
@@ -605,7 +631,7 @@ bool NetEngine::MonitorConnect(NetConnect *pConnect)
 }
 
 //向某组连接广播消息(业务层接口)
-void NetEngine::BroadcastMsg( int *recvGroupIDs, int recvCount, char *msg, int msgsize, int *filterGroupIDs, int filterCount )
+void NetEngine::BroadcastMsg( int *recvGroupIDs, int recvCount, char *msg, unsigned int msgsize, int *filterGroupIDs, int filterCount )
 {
 	//////////////////////////////////////////////////////////////////////////
 	//关闭无心跳的连接
@@ -635,7 +661,7 @@ void NetEngine::BroadcastMsg( int *recvGroupIDs, int recvCount, char *msg, int m
 }
 
 //向某主机发送消息(业务层接口)
-void NetEngine::SendMsg( int hostID, char *msg, int msgsize )
+void NetEngine::SendMsg( int hostID, char *msg, unsigned int msgsize )
 {
 	AutoLock lock( &m_connectsMutex );
 	ConnectList::iterator itNetConnect = m_connectList.find(hostID);
