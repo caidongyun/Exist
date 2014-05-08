@@ -1,0 +1,40 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Exist - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1151.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"output/Debug/Exist.pch" /YX /Fo"output/Debug/" /Fd"output/Debug/" /FD /GZ /c 
+"E:\Lib\HuoYu\HYLib\Exist\Exist\Exist.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Exist\NoDB.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1151.tmp" 
+Creating temporary file "C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1152.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"bin/Exist.pdb" /debug /machine:I386 /out:"bin/Exist.exe" /pdbtype:sept 
+.\output\Debug\common.obj
+.\output\Debug\Exist.obj
+.\output\Debug\md5.obj
+.\output\Debug\NoDB.obj
+.\output\Debug\Protocol.obj
+.\output\Debug\RHTable.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1152.tmp"
+<h3>Output Window</h3>
+Compiling...
+NoDB.cpp
+Exist.cpp
+Linking...
+link: executing 'E:\PROGRA~1\MICROS~2\VC98\Bin\link.exe'
+
+
+
+<h3>Results</h3>
+Exist.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

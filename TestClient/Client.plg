@@ -1,0 +1,233 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mdk - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1D9.tmp" with contents
+[
+/nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /Fp"Release/mdk.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\ConfigFile.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Executor.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\IOBuffer.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\IOBufferBlock.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Lock.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Logger.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\mapi.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\MemoryPool.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Queue.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\ShareMemory.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Signal.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Socket.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Task.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Thread.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\ThreadPool.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\EpollFrame.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\EpollMonitor.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\IOCPFrame.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\IOCPMonitor.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetConnect.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetEngine.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetEventMonitor.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetHost.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetServer.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STEpoll.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STIocp.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STNetConnect.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STNetEngine.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STNetHost.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STNetServer.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1D9.tmp" 
+Creating temporary file "C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1DA.tmp" with contents
+[
+/nologo /out:"..\lib\mdk.lib" 
+".\Release\ConfigFile.obj"
+".\Release\Executor.obj"
+".\Release\IOBuffer.obj"
+".\Release\IOBufferBlock.obj"
+".\Release\Lock.obj"
+".\Release\Logger.obj"
+".\Release\mapi.obj"
+".\Release\MemoryPool.obj"
+".\Release\Queue.obj"
+".\Release\ShareMemory.obj"
+".\Release\Signal.obj"
+".\Release\Socket.obj"
+".\Release\Task.obj"
+".\Release\Thread.obj"
+".\Release\ThreadPool.obj"
+".\Release\EpollFrame.obj"
+".\Release\EpollMonitor.obj"
+".\Release\IOCPFrame.obj"
+".\Release\IOCPMonitor.obj"
+".\Release\NetConnect.obj"
+".\Release\NetEngine.obj"
+".\Release\NetEventMonitor.obj"
+".\Release\NetHost.obj"
+".\Release\NetServer.obj"
+".\Release\STEpoll.obj"
+".\Release\STIocp.obj"
+".\Release\STNetConnect.obj"
+".\Release\STNetEngine.obj"
+".\Release\STNetHost.obj"
+".\Release\STNetServer.obj"
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1DA.tmp"
+<h3>Output Window</h3>
+Compiling...
+ConfigFile.cpp
+Executor.cpp
+IOBuffer.cpp
+IOBufferBlock.cpp
+Lock.cpp
+Logger.cpp
+mapi.cpp
+MemoryPool.cpp
+Queue.cpp
+ShareMemory.cpp
+Signal.cpp
+Socket.cpp
+Task.cpp
+Thread.cpp
+ThreadPool.cpp
+EpollFrame.cpp
+EpollMonitor.cpp
+IOCPFrame.cpp
+IOCPMonitor.cpp
+NetConnect.cpp
+NetEngine.cpp
+NetEventMonitor.cpp
+NetHost.cpp
+NetServer.cpp
+STEpoll.cpp
+STIocp.cpp
+STNetConnect.cpp
+STNetEngine.cpp
+STNetHost.cpp
+STNetServer.cpp
+Creating library...
+xilib: executing 'E:\PROGRA~1\MICROS~2\VC98\Bin\lib.exe'
+
+
+
+<h3>Results</h3>
+mdk.lib - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: mdk - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1DB.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /Fp"Debug/mdk.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\ConfigFile.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Executor.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\IOBuffer.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\IOBufferBlock.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Lock.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Logger.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\mapi.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\MemoryPool.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Queue.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\ShareMemory.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Signal.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Socket.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Task.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\Thread.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\mdk\ThreadPool.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\EpollFrame.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\EpollMonitor.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\IOCPFrame.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\IOCPMonitor.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetConnect.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetEngine.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetEventMonitor.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetHost.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\NetServer.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STEpoll.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STIocp.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STNetConnect.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STNetEngine.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STNetHost.cpp"
+"E:\Lib\HuoYu\HYLib\Exist\Micro-Development-Kit\source\frame\netserver\STNetServer.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1DB.tmp" 
+Creating temporary file "C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1DC.tmp" with contents
+[
+/nologo /out:"..\lib\mdk_d.lib" 
+".\Debug\ConfigFile.obj"
+".\Debug\Executor.obj"
+".\Debug\IOBuffer.obj"
+".\Debug\IOBufferBlock.obj"
+".\Debug\Lock.obj"
+".\Debug\Logger.obj"
+".\Debug\mapi.obj"
+".\Debug\MemoryPool.obj"
+".\Debug\Queue.obj"
+".\Debug\ShareMemory.obj"
+".\Debug\Signal.obj"
+".\Debug\Socket.obj"
+".\Debug\Task.obj"
+".\Debug\Thread.obj"
+".\Debug\ThreadPool.obj"
+".\Debug\EpollFrame.obj"
+".\Debug\EpollMonitor.obj"
+".\Debug\IOCPFrame.obj"
+".\Debug\IOCPMonitor.obj"
+".\Debug\NetConnect.obj"
+".\Debug\NetEngine.obj"
+".\Debug\NetEventMonitor.obj"
+".\Debug\NetHost.obj"
+".\Debug\NetServer.obj"
+".\Debug\STEpoll.obj"
+".\Debug\STIocp.obj"
+".\Debug\STNetConnect.obj"
+".\Debug\STNetEngine.obj"
+".\Debug\STNetHost.obj"
+".\Debug\STNetServer.obj"
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\HuoYu\LOCALS~1\Temp\RSP1DC.tmp"
+<h3>Output Window</h3>
+Compiling...
+ConfigFile.cpp
+Executor.cpp
+IOBuffer.cpp
+IOBufferBlock.cpp
+Lock.cpp
+Logger.cpp
+mapi.cpp
+MemoryPool.cpp
+Queue.cpp
+ShareMemory.cpp
+Signal.cpp
+Socket.cpp
+Task.cpp
+Thread.cpp
+ThreadPool.cpp
+EpollFrame.cpp
+EpollMonitor.cpp
+IOCPFrame.cpp
+IOCPMonitor.cpp
+NetConnect.cpp
+NetEngine.cpp
+NetEventMonitor.cpp
+NetHost.cpp
+NetServer.cpp
+STEpoll.cpp
+STIocp.cpp
+STNetConnect.cpp
+STNetEngine.cpp
+STNetHost.cpp
+STNetServer.cpp
+Creating library...
+xilib: executing 'E:\PROGRA~1\MICROS~2\VC98\Bin\lib.exe'
+
+
+
+<h3>Results</h3>
+mdk_d.lib - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
