@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExistVc8", "Exist\ExistVc8.vcproj", "{F8C8AC39-1131-4C06-BB05-C61D07CFB1CA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mdk", "Micro-Development-Kit\mdk\mdk.vcproj", "{8C30045E-DCCD-46FF-929B-8FF0C0E771C8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bstruct", "bstruct\bstruct.vcproj", "{0D1DA897-8EC7-4258-AA0D-CE9F8F51DF50}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8C8AC39-1131-4C06-BB05-C61D07CFB1CA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F8C8AC39-1131-4C06-BB05-C61D07CFB1CA}.Debug|Win32.Build.0 = Debug|Win32
+		{F8C8AC39-1131-4C06-BB05-C61D07CFB1CA}.Release|Win32.ActiveCfg = Release|Win32
+		{F8C8AC39-1131-4C06-BB05-C61D07CFB1CA}.Release|Win32.Build.0 = Release|Win32
+		{8C30045E-DCCD-46FF-929B-8FF0C0E771C8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8C30045E-DCCD-46FF-929B-8FF0C0E771C8}.Debug|Win32.Build.0 = Debug|Win32
+		{8C30045E-DCCD-46FF-929B-8FF0C0E771C8}.Release|Win32.ActiveCfg = Release|Win32
+		{8C30045E-DCCD-46FF-929B-8FF0C0E771C8}.Release|Win32.Build.0 = Release|Win32
+		{0D1DA897-8EC7-4258-AA0D-CE9F8F51DF50}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0D1DA897-8EC7-4258-AA0D-CE9F8F51DF50}.Debug|Win32.Build.0 = Debug|Win32
+		{0D1DA897-8EC7-4258-AA0D-CE9F8F51DF50}.Release|Win32.ActiveCfg = Release|Win32
+		{0D1DA897-8EC7-4258-AA0D-CE9F8F51DF50}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
