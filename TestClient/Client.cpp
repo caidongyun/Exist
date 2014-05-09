@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #endif
 #include "mdk/Socket.h"
-#include "../Exist-Node/RHTable.h"
+#include "../Exist/RHTable.h"
 #include "mdk/atom.h"
 using namespace mdk;
 
@@ -36,7 +36,7 @@ DWORD Client( LPVOID pParam  )
 	DWORD dwThreadID;
 	Socket sock;
 	sock.Init( Socket::tcp );
-//	printf( "connect(%d)\n", start );
+	printf( "connect(%d)\n", start );
 	if ( !sock.Connect( strIP, uPort ) )
 	{
 		printf( "connect error\n" );
