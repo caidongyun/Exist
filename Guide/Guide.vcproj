@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="ExistVc8"
-	ProjectGUID="{F8C8AC39-1131-4C06-BB05-C61D07CFB1CA}"
-	RootNamespace="ExistVc8"
+	Name="Guide"
+	ProjectGUID="{8A837F51-17F3-4042-BFE3-C5E7C1EC8A51}"
+	RootNamespace="Guide"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -171,43 +171,35 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Exist.cpp"
+				RelativePath=".\Guide.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Exist.h"
+				RelativePath=".\Guide.h"
 				>
 			</File>
 			<File
-				RelativePath=".\md5.cpp"
+				RelativePath=".\ReplyMsg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\md5.h"
+				RelativePath=".\ReplyMsg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\NoDB.cpp"
+				RelativePath=".\TCPWorker.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NoDB.h"
+				RelativePath=".\TCPWorker.h"
 				>
 			</File>
 			<File
-				RelativePath=".\RecoverPool.cpp"
+				RelativePath=".\Worker.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\RecoverPool.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RHTable.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RHTable.h"
+				RelativePath=".\Worker.h"
 				>
 			</File>
 		</Filter>
@@ -223,10 +215,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<File
-			RelativePath=".\ClassDiagram1.cd"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
