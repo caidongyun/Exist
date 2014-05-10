@@ -33,4 +33,6 @@ char* DesRole(unsigned char status);
 //hashidÂäÔÚ¼¸ºÅÆ¬ÉÏ
 unsigned int CalPieceNo( unsigned int hashid, unsigned int pieceSize );
 
+
+
 #endif //COMMOND_H

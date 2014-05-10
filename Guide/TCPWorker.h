@@ -18,6 +18,8 @@ using namespace std;
 #define MAX_BSTRUCT_SIZE	1048576 //BStruct结构最大长度1M
 #define MAX_MSG_SIZE		MAX_BSTRUCT_SIZE + MSG_HEAD_SIZE//消息缓冲最大长度，报文头+BStruct最大大小
 
+#define SECTION_KEY "exist"
+
 /*
 	tcp工作类
 	接收tcp消息，执行业务
