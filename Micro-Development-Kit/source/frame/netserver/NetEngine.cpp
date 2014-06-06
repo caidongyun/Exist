@@ -10,7 +10,6 @@
 #include <vector>
 #include <list>
 #include <iostream>
-#include <assert.h>
 #include <time.h>
 
 #include "../../../include/mdk/mapi.h"
@@ -114,8 +113,15 @@ bool NetEngine::Start()
 	}
 	m_workThreads.Start( m_workThreadCount );
 	int i = 0;
-	for ( ; i < m_ioThreadCount; i++ ) m_ioThreads.Accept( Executor::Bind(&NetEngine::NetMonitorTask), this, NULL );
+	for ( i = 0; i < m_ioThreadCount; i++ ) m_ioThreads.Accept( Executor::Bind(&NetEngine::NetMonitorTask), this, NULL);
+#ifndef WIN32
+	for ( i = 0; i < m_ioThreadCount; i++ ) m_ioThreads.Accept( Executor::Bind(&NetEngine::NetMonitorTask), this, (void*)1 );
+	for ( i = 0; i < m_ioThreadCount; i++ ) m_ioThreads.Accept( Executor::Bind(&NetEngine::NetMonitorTask), this, (void*)2 );
+	m_ioThreads.Start( m_ioThreadCount * 3 );
+#else
 	m_ioThreads.Start( m_ioThreadCount );
+#endif
+	
 	if ( !ListenAll() )
 	{
 		Stop();
@@ -142,6 +148,7 @@ void NetEngine::Stop()
 	if ( m_stop ) return;
 	m_stop = true;
 	m_pNetMonitor->Stop();
+	m_sigStop.Notify();
 	m_mainThread.Stop( 3000 );
 	m_ioThreads.Stop();
 	m_workThreads.Stop();
@@ -152,7 +159,7 @@ void* NetEngine::Main(void*)
 {
 	while ( !m_stop ) 
 	{
-		m_sleep( 10000 );
+		if ( m_sigStop.Wait( 10000 ) ) break;
 		HeartMonitor();
 		ReConnectAll();
 	}
@@ -333,18 +340,61 @@ bool NetEngine::OnConnect( SOCKET sock, bool isConnectServer )
 
 void* NetEngine::ConnectWorker( NetConnect *pConnect )
 {
-	m_pNetServer->OnConnect( pConnect->m_host );
-	pConnect->Release();//使用完毕释放共享对象
-	//监听连接
-	/*
-		 必须等OnConnect完成，才可以开始监听连接上的IO事件
-		 否则，可能业务层尚未完成连接初始化工作，就收到OnMsg通知，
-		 导致业务层不知道该如何处理消息
-	 */
-	if ( !MonitorConnect(pConnect) )
+	if ( !m_pNetMonitor->AddMonitor(pConnect->GetSocket()->GetSocket()) ) 
 	{
-		CloseConnect(pConnect->GetSocket()->GetSocket());
+		AutoLock lock( &m_connectsMutex );
+		ConnectList::iterator itNetConnect = m_connectList.find( pConnect->GetSocket()->GetSocket() );
+		if ( itNetConnect == m_connectList.end() ) return 0;//底层已经主动断开
+		CloseConnect( itNetConnect );
+		pConnect->Release();
+		return 0;
 	}
+	m_pNetServer->OnConnect( pConnect->m_host );
+	/*
+		监听连接
+		※必须等OnConnect业务完成，才可以开始监听连接上的IO事件
+		否则，可能业务层尚未完成连接初始化工作，就收到OnMsg通知，
+		导致业务层不知道该如何处理消息
+		
+		※尚未加入监听，pConnect对象不存在并发线程访问
+		如果OnConnect业务中，没有关闭连接，才能加入监听
+
+		※如果不检查m_bConnect，则AddRecv有可能成功，导致OnData有机会触发。
+		因为CloseConnect方法只是设置了关闭连接的标志，并将NetConnect从连接列表删除，
+		并没有真的关闭socket。
+		这是为了保证socket句柄在NetServer::OnClose业务完成前，不被系统重复使用，
+
+		真正关闭是在NetEngine::CloseWorker()里是另外一个线程了。
+		所以如果OnConnect业务中调用了关闭，但在CloseWorker线程执行前，
+		在这里仍然有可能先被执行，监听成功，而这个监听是不希望发生的
+	*/
+	if ( pConnect->m_bConnect )
+	{
+#ifdef WIN32
+		if ( !m_pNetMonitor->AddRecv( 
+			pConnect->GetSocket()->GetSocket(), 
+			(char*)(pConnect->PrepareBuffer(BUFBLOCK_SIZE)), 
+			BUFBLOCK_SIZE ) )
+		{
+			AutoLock lock( &m_connectsMutex );
+			ConnectList::iterator itNetConnect = m_connectList.find( pConnect->GetSocket()->GetSocket() );
+			if ( itNetConnect == m_connectList.end() ) return 0;//底层已经主动断开
+			CloseConnect( itNetConnect );
+		}
+#else
+		if ( !m_pNetMonitor->AddRecv( 
+			pConnect->GetSocket()->GetSocket(), 
+			NULL, 
+			0 ) )
+		{
+			AutoLock lock( &m_connectsMutex );
+			ConnectList::iterator itNetConnect = m_connectList.find( pConnect->GetSocket()->GetSocket() );
+			if ( itNetConnect == m_connectList.end() ) return 0;//底层已经主动断开
+			CloseConnect( itNetConnect );
+		}
+#endif
+	}
+	pConnect->Release();
 	return 0;
 }
 
@@ -598,14 +648,8 @@ void NetEngine::SetServerClose(NetConnect *pConnect)
 	}
 }
 
-//监听连接
-bool NetEngine::MonitorConnect(NetConnect *pConnect)
-{
-	return false;
-}
-
 //向某组连接广播消息(业务层接口)
-void NetEngine::BroadcastMsg( int *recvGroupIDs, int recvCount, char *msg, int msgsize, int *filterGroupIDs, int filterCount )
+void NetEngine::BroadcastMsg( int *recvGroupIDs, int recvCount, char *msg, unsigned int msgsize, int *filterGroupIDs, int filterCount )
 {
 	//////////////////////////////////////////////////////////////////////////
 	//关闭无心跳的连接
@@ -635,7 +679,7 @@ void NetEngine::BroadcastMsg( int *recvGroupIDs, int recvCount, char *msg, int m
 }
 
 //向某主机发送消息(业务层接口)
-void NetEngine::SendMsg( int hostID, char *msg, int msgsize )
+void NetEngine::SendMsg( int hostID, char *msg, unsigned int msgsize )
 {
 	AutoLock lock( &m_connectsMutex );
 	ConnectList::iterator itNetConnect = m_connectList.find(hostID);

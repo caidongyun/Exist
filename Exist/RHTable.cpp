@@ -6,7 +6,8 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
-#include "md5.h"
+#include "../Micro-Development-Kit/include/mdk/mapi.h"
+
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -24,7 +25,7 @@ RHTable::RHTable()
 	m_maxHash = MAX_HASH_32;
 #endif
 	m_bRemote = false;
-	HashFunction = MD5HashFunction;
+	HashFunction = NULL;
 	m_pHashTable = NULL;
 	Expand(0);
 }
@@ -41,7 +42,7 @@ RHTable::RHTable(unsigned long size)
 	m_maxHash = MAX_HASH_32;
 #endif
 	m_bRemote = false;
-	HashFunction = MD5HashFunction;
+	HashFunction = NULL;
 	m_pHashTable = NULL;
 	Expand(size);
 }
@@ -129,8 +130,29 @@ void RHTable::SetRemoteMode( bool bRemote )
 	m_bRemote = bRemote;
 }
 
+unsigned int RHTable::RemoteHash( mdk::uint8 key )
+{
+	return RemoteHash( (unsigned char*)&key, sizeof(mdk::uint8) );
+}
+
+unsigned int RHTable::RemoteHash( mdk::uint16 key )
+{
+	return RemoteHash( (unsigned char*)&key, sizeof(mdk::uint16) );
+}
+
+unsigned int RHTable::RemoteHash( mdk::uint32 key )
+{
+	return RemoteHash( (unsigned char*)&key, sizeof(mdk::uint32) );
+}
+
+unsigned int RHTable::RemoteHash( mdk::uint64 key )
+{
+	return RemoteHash( (unsigned char*)&key, sizeof(mdk::uint64) );
+}
+
 unsigned int RHTable::RemoteHash( unsigned char *key, unsigned int size )
 {
+	mdk::mdk_assert(NULL != HashFunction);
 	unsigned char hashKey[256];
 	unsigned int hashSize;
 	HashFunction( hashKey, hashSize, key, size );
@@ -243,6 +265,7 @@ void RHTable::ReleaseOldHashTable()
 
 RHTable::OP_R* RHTable::Insert(unsigned char *key, unsigned int size, void *value, unsigned int hashValue)
 {
+	mdk::mdk_assert(m_bRemote||NULL != HashFunction);
 	static OP_R res;
 	res.bSuccess = false;
 	res.pInsert = Find( key, size, hashValue, true );
@@ -258,21 +281,26 @@ RHTable::OP_R* RHTable::Insert(unsigned char *key, unsigned int size, void *valu
 
 void* RHTable::Find(unsigned char *key, unsigned int size, unsigned int hashValue )
 {
+	mdk::mdk_assert(m_bRemote||NULL != HashFunction);
 	ELEMENT *pFindE = Find( key, size, hashValue, false );
 	if ( NULL == pFindE ) return NULL;
 	return pFindE->value;
 }
 
-bool RHTable::Update(unsigned char *key, unsigned int size, void *value, unsigned int hashValue)
+void* RHTable::Update(unsigned char *key, unsigned int size, void *value, unsigned int hashValue)
 {
+	mdk::mdk_assert(m_bRemote||NULL != HashFunction);
 	ELEMENT *pFindE = Find( key, size, hashValue, false );
-	if ( NULL == pFindE ) return false;
+	void *old = NULL;
+	if ( NULL == pFindE ) return old;
+	old = pFindE->value;
 	pFindE->value = value;
-	return true;
+	return old;
 }
 
 void RHTable::Delete(unsigned char *key, unsigned int size, unsigned int hashValue)
 {
+	mdk::mdk_assert(m_bRemote||NULL != HashFunction);
 	ELEMENT *pFindE = Find( key, size, hashValue, false );
 	if ( NULL == pFindE ) return;
 	pFindE->isDel = true;

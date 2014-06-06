@@ -95,24 +95,26 @@ NoDB::NoDB(char* cfgFile)
 		return;
 	}
 
+#define EXIST_SECTION "exist" 
+
 	m_bGuideConnected = false;
 	m_bNotifyReady = false;
 	m_status = NodeStatus::Idle;
 	m_context.m_bStop = false;
-	m_context.distributed = (string)m_cfgFile["distributed"];
-	m_context.guideIP = (string)m_cfgFile["guide ip"];
-	m_context.guidePort = m_cfgFile["guide port"];
+	m_context.distributed = (std::string)m_cfgFile[EXIST_SECTION]["distributed"];
+	m_context.guideIP = (string)m_cfgFile[EXIST_SECTION]["guide ip"];
+	m_context.guidePort = m_cfgFile[EXIST_SECTION]["guide port"];
 	m_context.databaseIP = (string)"";
 	m_context.databasePort = 0;
 	m_context.masterIP = (string)"";
 	m_context.masterPort = 0;
-	m_context.role = (string)m_cfgFile["role"];
-	m_context.pieceNo = m_cfgFile["pieceNo"];
-	m_context.dataRootDir = (string)m_cfgFile["data root dir"];
-	m_context.port = m_cfgFile["port"];
-	m_context.wanIP = (string)m_cfgFile["wan IP"];
-	m_context.lanIP = (string)m_cfgFile["lan IP"];
-	m_context.maxMemory = m_cfgFile["max memory"];
+	m_context.role = (string)m_cfgFile[EXIST_SECTION]["role"];
+	m_context.pieceNo = m_cfgFile[EXIST_SECTION]["pieceNo"];
+	m_context.dataRootDir = (string)m_cfgFile[EXIST_SECTION]["data root dir"];
+	m_context.port = m_cfgFile[EXIST_SECTION]["port"];
+	m_context.wanIP = (string)m_cfgFile[EXIST_SECTION]["wan IP"];
+	m_context.lanIP = (string)m_cfgFile[EXIST_SECTION]["lan IP"];
+	m_context.maxMemory = m_cfgFile[EXIST_SECTION]["max memory"];
 
 	if ( "true" == m_context.distributed ) 
 	{

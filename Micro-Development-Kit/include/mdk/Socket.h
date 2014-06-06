@@ -10,6 +10,7 @@
 #define MDK_SOCKET_H
 
 #ifdef WIN32
+#pragma warning(disable:4996)
 #include <windows.h>
 //#include <winsock2.h>  
 //#include <mswsock.h>
@@ -35,6 +36,7 @@
 #include <arpa/inet.h>
 #include <sys/select.h>
 #include <sys/types.h>
+#include <unistd.h>//为了兼容gcc4.7.2 gcc4.7.3
 
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
@@ -44,7 +46,6 @@ typedef int SOCKET;
 
 
 #include <time.h>
-#include <assert.h>
 #include <string>
 
 namespace mdk
@@ -68,8 +69,11 @@ public:
 	Socket();
 	Socket( SOCKET hSocket, protocol nProtocolType );
 	virtual ~Socket();
-	
+
 public:
+	//将域名转换为真实IP，如果lpszHostAddress本来就是ip，不影响转换结果
+	//转换失败返回""
+	static char* HostName2IP( char *hostname );
 	//取得套接字句柄
 	SOCKET GetSocket();
 	/*
@@ -142,11 +146,11 @@ public:
 	/*
 		功能：客户端方法，连接服务器
 		参数：
-			lpszHostAddress	LPCTSTR		[In]	对方Ip地址
+			lpszHostAddress	LPCTSTR		[In]	对方Ip地址或域名
 			nHostPort		UINT		[In]	对方监听的端口
 		返回值：成功返回TRUE,失败返回FALSE
 	*/
-	bool Connect( const char* lpszHostAddress, unsigned short nHostPort );
+	bool Connect( const char* lpszHostAddress, unsigned short nHostPort, long lSecond = 10 );
 
 	/*
 		功能：服务端方法，开始网络服务
