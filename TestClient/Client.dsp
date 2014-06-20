@@ -82,31 +82,23 @@ LINK32=link.exe
 # Name "Client - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\include\mdk\atom.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Client.cpp
 # End Source File
 # Begin Source File
 
-SOURCE="..\Exist-Node\md5.cpp"
+SOURCE=..\Exist\md5.cpp
 # End Source File
 # Begin Source File
 
-SOURCE="..\Exist-Node\md5.h"
+SOURCE=..\Exist\md5.h
 # End Source File
 # Begin Source File
 
-SOURCE="..\Exist-Node\RHTable.cpp"
+SOURCE=..\Exist\RHTable.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\source\mdk\Socket.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\mdk\Socket.h
+SOURCE="..\Micro-Development-Kit\source\mdk\Socket.cpp"
 # End Source File
 # End Target
 # End Project
