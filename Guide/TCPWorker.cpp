@@ -37,9 +37,9 @@ TCPWorker::~TCPWorker()
 
 bool TCPWorker::ReadConfig()
 {
-	m_port = m_cfgFile["port"];
-	m_heartTime = m_cfgFile["heartTime"];
-	m_pieceSize = m_cfgFile["pieceSize"];
+	m_port = m_cfgFile[SECTION_KEY]["port"];
+	m_heartTime = m_cfgFile[SECTION_KEY]["heartTime"];
+	m_pieceSize = m_cfgFile[SECTION_KEY]["pieceSize"];
 	
 	if (  120 > m_heartTime ) m_heartTime = 120;
 	if ( 0 >= m_port ) m_port = 7250;
@@ -93,8 +93,8 @@ void TCPWorker::OnCloseConnect(mdk::STNetHost &host)
 //非法报文
 void TCPWorker::InvalidMsg(mdk::STNetHost &host, unsigned char *msg, unsigned short len)
 {
-	m_log.Run( "Waring: msg format is invalid from Host(%d)", host.ID() );
-	m_log.RunStream( msg, len);
+	m_log.Info("info:", "Waring: msg format is invalid from Host(%d)", host.ID() );
+	m_log.Info("info:", "%s-%d", msg, len);
 	host.Close();
 }
 

@@ -8,7 +8,11 @@ namespace mdk
 {
 
 MemoryPool* IOBufferBlock::ms_pMemoryPool = new MemoryPool( sizeof(IOBufferBlock), 500 );
-Mutex* IOBufferBlock::ms_pPoolMutex = new Mutex;
+
+void IOBufferBlock::ReleaseMemoryPool()
+{
+	delete ms_pMemoryPool;
+}
 
 void* IOBufferBlock::operator new(size_t uObjectSize)
 {
@@ -40,11 +44,11 @@ void IOBufferBlock::WriteFinished(unsigned short uLength)
 {
 	m_uLength += uLength;
 }
- 
+
 //冲缓冲块读取uLength长度的数据
-unsigned short IOBufferBlock::ReadData( unsigned char *data, unsigned short uLength, bool bDel )
+unsigned int IOBufferBlock::ReadData( unsigned char *data, unsigned int uLength, bool bDel )
 {
-	unsigned short uReadSize;
+	unsigned int uReadSize;
 	if ( uLength > m_uLength - m_uRecvPos ) uReadSize = m_uLength - m_uRecvPos;
 	else uReadSize = uLength;
 	memcpy( data, &m_buffer[m_uRecvPos], uReadSize );

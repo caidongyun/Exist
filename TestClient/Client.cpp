@@ -36,7 +36,7 @@ DWORD Client( LPVOID pParam  )
 	DWORD dwThreadID;
 	Socket sock;
 	sock.Init( Socket::tcp );
-//	printf( "connect(%d)\n", start );
+	printf( "connect(%d)\n", start );
 	if ( !sock.Connect( strIP, uPort ) )
 	{
 		printf( "connect error\n" );

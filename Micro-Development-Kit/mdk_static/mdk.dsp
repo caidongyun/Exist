@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
 # ADD BASE RSC /l 0x804 /d "NDEBUG"
 # ADD RSC /l 0x804 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
 # ADD BASE RSC /l 0x804 /d "_DEBUG"
 # ADD RSC /l 0x804 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -102,6 +102,14 @@ SOURCE=..\source\mdk\Executor.cpp
 # Begin Source File
 
 SOURCE=..\include\mdk\Executor.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\source\mdk\FinishedTime.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\include\mdk\FinishedTime.h
 # End Source File
 # Begin Source File
 
@@ -193,6 +201,14 @@ SOURCE=..\include\mdk\Socket.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\source\mdk\SRWLock.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\include\mdk\SRWLock.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\source\mdk\Task.cpp
 # End Source File
 # Begin Source File
@@ -237,6 +253,14 @@ SOURCE=..\source\frame\netserver\EpollMonitor.cpp
 # Begin Source File
 
 SOURCE=..\include\frame\netserver\EpollMonitor.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\source\frame\netserver\HostData.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\include\frame\netserver\HostData.h
 # End Source File
 # Begin Source File
 

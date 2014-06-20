@@ -10,6 +10,8 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+#define MAX_LEN 2000
+
 //数据库加入到网络中
 void TCPWorker::DBJoin(mdk::STNetHost &host, bsp::BStruct &msg)
 {
@@ -22,7 +24,7 @@ void TCPWorker::DBJoin(mdk::STNetHost &host, bsp::BStruct &msg)
 		unsigned short port = msg["port"];
 		string wanIP = (string)msg["wan_ip"];
 		string lanIP = (string)msg["lan_ip"];
-		m_log.Run( "Waring:refuse Database join:Database already in net, host info:id %d; wan ip%s; lan ip%s; port%d", 
+		m_log.Info("info:", "Waring:refuse Database join:Database already in net, host info:id %d; wan ip%s; lan ip%s; port%d", 
 			host.ID(), wanIP.c_str(), lanIP.c_str(), port );
 		return;
 	}
@@ -38,7 +40,7 @@ void TCPWorker::DBJoin(mdk::STNetHost &host, bsp::BStruct &msg)
 	m_db.wanIP = (string)msg["wan_ip"];
 	m_db.lanIP = (string)msg["lan_ip"];
 	m_db.status = NodeStatus::LoadData;
-	m_log.Run( "Database join, host info:id %d; wan ip%s; lan ip%s; port%d", 
+	m_log.Info("info:", "Database join, host info:id %d; wan ip%s; lan ip%s; port%d", 
 		host.ID(), m_db.wanIP.c_str(), m_db.lanIP.c_str(), m_db.port );
 	return;
 }
@@ -62,7 +64,7 @@ void TCPWorker::MasterJoin(mdk::STNetHost &host, bsp::BStruct &msg)
 	NodeList::iterator it = m_nodes.begin();
 	for ( ; it != m_nodes.end(); it++ ) SetMaster(it->second->host);
 
-	m_log.Run( "Master join, host info:id %d; wan ip%s; lan ip%s; port%d", 
+	m_log.Info("info:","Master join, host info:id %d; wan ip%s; lan ip%s; port%d", 
 		host.ID(), m_db.wanIP.c_str(), m_db.lanIP.c_str(), m_db.port );
 	
 	return;
@@ -81,7 +83,7 @@ void TCPWorker::PieceJoin(mdk::STNetHost &host, bsp::BStruct &msg)
 		string wanIP = (string)msg["wan_ip"];
 		string lanIP = (string)msg["lan_ip"];
 		unsigned short port = msg["port"];
-		m_log.Run( "Waring:refuse Exist join:no enough memory, host info:id %d; wan ip%s; lan ip%s; port%d", 
+		m_log.Info("info:","Waring:refuse Exist join:no enough memory, host info:id %d; wan ip%s; lan ip%s; port%d", 
 			host.ID(), wanIP.c_str(), lanIP.c_str(), port );
 		return;
 	}
@@ -112,7 +114,7 @@ void TCPWorker::PieceJoin(mdk::STNetHost &host, bsp::BStruct &msg)
 	m_nodes.insert(NodeList::value_type(host.ID(), pNewExist));
 	if ( NodeStatus::NotOnline != m_db.status && NodeStatus::Closing != m_db.status ) SetDatabase(host);//设置数据库
 	if ( NodeStatus::NotOnline != m_master.status && NodeStatus::Closing != m_master.status ) SetMaster(host);//设置主分片
-	m_log.Run( "Exist join, host info:id %d; wan ip%s; lan ip%s; port%d", 
+	m_log.Info("info:", "Exist join, host info:id %d; wan ip%s; lan ip%s; port%d", 
 		host.ID(), m_db.wanIP.c_str(), m_db.lanIP.c_str(), m_db.port);
 
 	if ( 0 <= pNewExist->pieceNo && NodeStatus::Serving == m_db.status ) 
@@ -260,7 +262,7 @@ char* TCPWorker::StartPiece(unsigned int pieceNo)
 		delete pNotOnlineExist;
 	}
 	m_pieces.insert(PieceList::value_type(pExist->pieceNo, pExist));//加入到分片列表
-	m_log.Run( "Start Piece, Node info:pieceNo %d; hostid %d; wan ip%s; lan ip%s; port%d", 
+	m_log.Info("info:", "Start Piece, Node info:pieceNo %d; hostid %d; wan ip%s; lan ip%s; port%d", 
 		pExist->pieceNo, 
 		pExist->host.ID(), pExist->wanIP.c_str(), pExist->lanIP.c_str(), pExist->port);
 	return NULL;
@@ -275,12 +277,12 @@ char* TCPWorker::DelNode(Exist *pExist)
 		{
 			if (&m_db == pExist) 
 			{
-				m_log.Run( "Delete Database, Node info:hostid %d; wan ip%s; lan ip%s; port%d", 
+				m_log.Info("info:","Delete Database, Node info:hostid %d; wan ip%s; lan ip%s; port%d", 
 					pExist->host.ID(), pExist->wanIP.c_str(), pExist->lanIP.c_str(), pExist->port);
 			}
 			else if (&m_master == pExist) 
 			{
-				m_log.Run( "Delete Master, Node info:hostid %d; wan ip%s; lan ip%s; port%d", 
+				m_log.Info("info:", "Delete Master, Node info:hostid %d; wan ip%s; lan ip%s; port%d", 
 					pExist->host.ID(), pExist->wanIP.c_str(), pExist->lanIP.c_str(), pExist->port);
 			}
 			pExist->host.Close();
@@ -292,7 +294,7 @@ char* TCPWorker::DelNode(Exist *pExist)
 		m_nodes.erase(pExist->host.ID());
 		m_pieces.erase(pExist->host.ID());
 		pExist->host.Close();
-		m_log.Run( "Delete Node, Node info:pieceNo %d; hostid %d; wan ip%s; lan ip%s; port%d", 
+		m_log.Info("info:", "Delete Node, Node info:pieceNo %d; hostid %d; wan ip%s; lan ip%s; port%d", 
 			pExist->pieceNo, 
 			pExist->host.ID(), pExist->wanIP.c_str(), pExist->lanIP.c_str(), pExist->port);
 		delete pExist;
@@ -305,17 +307,17 @@ char* TCPWorker::DelNode(Exist *pExist)
 
 	if ( NodeRole::Database == pExist->role ) 
 	{
-		m_log.Run( "Node stop service, Node info:Database; hostid %d; wan ip%s; lan ip%s; port%d", 
+		m_log.Info("info:", "Node stop service, Node info:Database; hostid %d; wan ip%s; lan ip%s; port%d", 
 			pExist->host.ID(), pExist->wanIP.c_str(), pExist->lanIP.c_str(), pExist->port);
 	}
 	else if ( NodeRole::Master == pExist->role ) 
 	{
-		m_log.Run( "Node stop service, Node info:Master; hostid %d; wan ip%s; lan ip%s; port%d", 
+		m_log.Info("info:", "Node stop service, Node info:Master; hostid %d; wan ip%s; lan ip%s; port%d", 
 			pExist->host.ID(), pExist->wanIP.c_str(), pExist->lanIP.c_str(), pExist->port);
 	}
 	else 
 	{
-		m_log.Run( "Node stop service, Node info:pieceNo %d; hostid %d; wan ip%s; lan ip%s; port%d", 
+		m_log.Info("info:", "Node stop service, Node info:pieceNo %d; hostid %d; wan ip%s; lan ip%s; port%d", 
 			pExist->pieceNo, 
 			pExist->host.ID(), pExist->wanIP.c_str(), pExist->lanIP.c_str(), pExist->port);
 	}

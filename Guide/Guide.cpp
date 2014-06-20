@@ -23,10 +23,10 @@ int main( int argc, char** argv )
 	const char *ret = ser.Start();
 	if ( NULL != ret )
 	{
-		ser.GetLog().Error( "Guide Start error:%s", ret );
+		ser.GetLog().Info( "info:","Guide Start error:%s", ret );
 		return 0;
 	}
-	ser.GetLog().Run( "Guide Start" );
+	ser.GetLog().Info("info:", "Guide Start" );
 	ser.WaitStop();
 	return 0;
 }
